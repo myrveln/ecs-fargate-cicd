@@ -188,7 +188,7 @@ resource "aws_iam_role" "execution_role" {
             "logs:PutLogEvents"
           ]
           Effect   = "Allow"
-          Resource = "*"
+          Resource = "${aws_cloudwatch_log_group.this.arn}:*"
         },
         {
           Action = [
@@ -240,7 +240,7 @@ resource "aws_ecs_task_definition" "this" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = "/ecs/${var.application_name}"
+          awslogs-group         = aws_cloudwatch_log_group.this.name
           awslogs-region        = var.region
           awslogs-stream-prefix = var.application_name
         }

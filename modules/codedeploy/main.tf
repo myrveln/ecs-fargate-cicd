@@ -1,13 +1,6 @@
-data "aws_iam_policy_document" "codedeploy" {
-  statement {
-    sid    = "S3Polocy"
-    effect = "Allow"
-    actions = [
-      "s3:GetObject"
-    ]
-    resources = ["*"]
-  }
+data "aws_caller_identity" "current" {}
 
+data "aws_iam_policy_document" "codedeploy" {
   statement {
     sid    = "ECSPolicy"
     effect = "Allow"
@@ -27,8 +20,7 @@ data "aws_iam_policy_document" "codedeploy" {
       "elasticloadbalancing:DescribeTargetGroups",
       "elasticloadbalancing:DescribeListeners",
       "elasticloadbalancing:ModifyListener",
-      "elasticloadbalancing:DescribeRules",
-      "elasticloadbalancing:ModifyRule"
+      "elasticloadbalancing:DescribeRules"
     ]
     resources = ["*"]
   }
@@ -39,7 +31,7 @@ data "aws_iam_policy_document" "codedeploy" {
     actions = [
       "iam:PassRole"
     ]
-    resources = ["*"]
+    resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.service_name}-task-execution-role"]
   }
 }
 

@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "codebuild" {
       "s3:GetBucketAcl",
       "s3:GetBucketLocation"
     ]
-    resources = ["*"]
+    resources = ["arn:aws:s3:::${var.application_name}-artifact-bucket/*"]
   }
 
   statement {
@@ -29,12 +29,8 @@ data "aws_iam_policy_document" "codebuild" {
     effect = "Allow"
     actions = [
       "ecr:BatchCheckLayerAvailability",
-      "ecr:GetDownloadUrlForLayer",
       "ecr:GetRepositoryPolicy",
-      "ecr:DescribeRepositories",
       "ecr:ListImages",
-      "ecr:DescribeImages",
-      "ecr:BatchGetImage",
       "ecr:InitiateLayerUpload",
       "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
@@ -47,11 +43,10 @@ data "aws_iam_policy_document" "codebuild" {
     sid    = "CWPolicy"
     effect = "Allow"
     actions = [
-      "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    resources = ["*"]
+    resources = ["${aws_cloudwatch_log_group.this.arn}:*"]
   }
 
   statement {
@@ -60,7 +55,7 @@ data "aws_iam_policy_document" "codebuild" {
     actions = [
       "ecs:DescribeTaskDefinition"
     ]
-    resources = ["*"]
+    resources = ["arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:task-definition/${var.application_name}:*"]
   }
 
   statement {
@@ -68,8 +63,7 @@ data "aws_iam_policy_document" "codebuild" {
     effect = "Allow"
     actions = [
       "kms:Decrypt",
-      "kms:GenerateDataKey*",
-      "kms:DescribeKey"
+      "kms:GenerateDataKey"
     ]
     resources = [ "${var.kms_key_arn}" ]
 

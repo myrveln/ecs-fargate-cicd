@@ -48,7 +48,6 @@ data "aws_iam_policy_document" "codepipeline" {
       "codedeploy:GetApplicationRevision",
       "codedeploy:RegisterApplicationRevision",
       "codedeploy:GetDeploymentConfig",
-      "codedeploy:GetDeploymentGroup",
       "codedeploy:GetDeployment"
     ]
     resources = ["*"]
@@ -60,7 +59,7 @@ data "aws_iam_policy_document" "codepipeline" {
     actions = [
       "iam:PassRole"
     ]
-    resources = ["*"]
+    resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.service_name}-task-execution-role"]
   }
 
   statement {
@@ -87,7 +86,9 @@ data "aws_iam_policy_document" "codepipeline" {
     sid    = "ECSPolicy"
     effect = "Allow"
     actions = [
-      "ecs:*"
+      "ecs:RegisterTaskDefinition",
+      "ecs:ListTaskDefinitions",
+      "ecs:DescribeTaskDefinition"
     ]
     resources = ["*"]
   }
@@ -96,10 +97,7 @@ data "aws_iam_policy_document" "codepipeline" {
     sid    = "KMSPolicy"
     effect = "Allow"
     actions = [
-      "kms:DescribeKey",
-      "kms:GenerateDataKey*",
-      "kms:Encrypt",
-      "kms:ReEncrypt*",
+      "kms:GenerateDataKey",
       "kms:Decrypt"
     ]
     resources = [
@@ -194,7 +192,7 @@ resource "aws_codepipeline" "this" {
 }
 
 resource "aws_s3_bucket" "this" {
-  bucket_prefix = "${var.service_name}-artifact-bucket"
+  bucket = "${var.service_name}-artifact-bucket"
   force_destroy = true
 }
 
