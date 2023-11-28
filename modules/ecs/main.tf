@@ -43,7 +43,7 @@ resource "aws_lb" "public" {
 }
 
 resource "aws_lb_target_group" "blue" {
-  name        = "${var.application_name}-target-group-blue"
+  name        = "${var.application_name}-tg-blue"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
@@ -57,7 +57,7 @@ resource "aws_lb_target_group" "blue" {
 }
 
 resource "aws_lb_target_group" "green" {
-  name        = "${var.application_name}-target-group-green"
+  name        = "${var.application_name}-tg-green"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
@@ -236,6 +236,17 @@ resource "aws_ecs_task_definition" "this" {
           hostPort      = 80
         }
       ],
+
+      environment = [
+        {
+          name = "NAME1"
+          value = "VALUE1"
+        },
+        {
+          name = "NAME2"
+          value = "VALUE2"
+        }
+      ]
 
       logConfiguration = {
         logDriver = "awslogs"

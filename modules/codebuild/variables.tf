@@ -21,3 +21,7 @@ variable "github_repo_url" {
 variable "kms_key_arn" {
   type        = string
 }
+
+variable "task_arn" {
+  type        = string
+}

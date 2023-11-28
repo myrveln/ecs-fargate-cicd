@@ -31,8 +31,9 @@ module "codebuild" {
 
   application_name = var.application_name
   aws_region       = var.aws_region
-  ecs_cluster      = module.ecs.ecs_cluster_name
   github_repo_url  = var.github_repo_url
+  ecs_cluster      = module.ecs.ecs_cluster_name
+  task_arn         = module.ecs.task_definition_arn
   kms_key_arn      = module.codepipeline.kms_key_arn
 }
 

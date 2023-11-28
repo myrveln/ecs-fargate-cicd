@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "codebuild" {
     actions = [
       "ecs:DescribeTaskDefinition"
     ]
-    resources = ["arn:aws:ecs:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:task-definition/${var.application_name}:*"]
+    resources = ["*"]
   }
 
   statement {
@@ -133,6 +133,10 @@ resource "aws_codebuild_project" "this" {
     environment_variable {
       name  = "APPLICATION_NAME"
       value = var.application_name
+    }
+    environment_variable {
+      name  = "TASK_DEFINITION_ARN" # Ensures that the latest task definition created by Terraform is used in the next deploy
+      value = var.task_arn
     }
   }
   source {
