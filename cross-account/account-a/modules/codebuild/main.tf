@@ -72,15 +72,6 @@ data "aws_iam_policy_document" "codebuild" {
   }
 
   statement {
-    sid    = "AllowDescribeTaskDefinition"
-    effect = "Allow"
-    actions = [
-      "ecs:DescribeTaskDefinition"
-    ]
-    resources = ["*"]
-  }
-
-  statement {
     sid    = "AllowAssumeRoleExternal"
     effect = "Allow"
     actions = [

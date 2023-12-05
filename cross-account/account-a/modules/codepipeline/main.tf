@@ -40,15 +40,6 @@ data "aws_iam_policy_document" "codepipeline" {
   }
 
   statement {
-    sid    = "CodeDeployPolicy"
-    effect = "Allow"
-    actions = [
-      "codedeploy:GetApplication",
-    ]
-    resources = ["*"]
-  }
-
-  statement {
     sid    = "CodeStarConnectionsPolicy"
     effect = "Allow"
     actions = [
