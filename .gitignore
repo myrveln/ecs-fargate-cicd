@@ -64,3 +64,4 @@ terraform.rc
 # Other stuff
 .DS_Store
 
+env.sh

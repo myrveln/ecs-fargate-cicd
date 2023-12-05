@@ -7,25 +7,25 @@ variable "aws_region" {
 variable "application_name" {
   description = "Name of the application you want to deploy on ECS"
   type        = string
-  default     = "docker-sample"
+  default     = "docker-example"
 }
 
 variable "vpc_id" {
   description = "Id of the VPC where the Service will be deployed into"
   type        = string
-  default     = "vpc-052782e882c202589"
+  default     = "vpc-03325392e4ec9bf77"
 }
 
 variable "public_subnets" {
   description = "Id of the public subnets for the internet-facing ALB"
   type        = list(string)
-  default     = ["subnet-08f6268cee002a39c", "subnet-0b82470e32adaa4e0"]
+  default     = ["subnet-03c62efa955e84a21", "subnet-0c0e500f13261a28e"]
 }
 
 variable "private_subnets" {
   description = "Id of the private subnets for the ECS service"
   type        = list(string)
-  default     = ["subnet-0dde13227f78d8c49", "subnet-035704e626881e69a"]
+  default     = ["subnet-0bb3ce5130a527cce", "subnet-06dc0aa67ac116a7a"]
 }
 
 variable "github_repo_id" {
